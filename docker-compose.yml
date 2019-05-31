@@ -1,20 +1,24 @@
 nginx:
-  image: nginx:1.12.2
+  image: nginx:1.15
   volumes:
-      - ./etc/nginx/default.d/girder.conf:/etc/nginx/conf.d/site.template
-      - ./etc/pki/nginx/private/server.key:/etc/nginx/ssl/nginx.key
-      - ./etc/pki/nginx/server.crt:/etc/nginx/ssl/nginx.crt
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/site.template:ro
+      - ./nginx/server.key:/etc/nginx/ssl/nginx.key:ro
+      - ./nginx/server.crt:/etc/nginx/ssl/nginx.crt:ro
+      - /usr/share/nginx/modules/:/usr/share/nginx/modules/:ro
+      - /etc/nginx/conf.d/:/etc/nginx/conf.d/:ro
+      - /usr/share/nginx/html:/usr/share/nginx/html:ro
+      - /etc/nginx/default.d/:/etc/nginx/default.d/:ro
       - .:/data/www
   ports:
     # or 8080:8080
       - "443:443"
   links:
       - "girder:girder"
-  environment:
-      - NGINX_HOST=datavault.dev.ncsa.illinois.edu
-      - NGINX_PORT=80
-  command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
-
+  # environment:
+  #     - NGINX_HOST=datavault.dev.ncsa.illinois.edu
+  #     - NGINX_PORT=80
+  # command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+  command: [nginx, '-g', 'daemon off;']
 
 
 
