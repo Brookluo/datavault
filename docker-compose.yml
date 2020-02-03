@@ -1,17 +1,17 @@
-nginx:
-  image: nginx:1.15
-  volumes:
-      # - ./nginx/girder.conf:/etc/nginx/default.d/girder.conf
-      # - ./nginx/server.key:/etc/nginx/ssl/nginx.key
-      - ./nginx/etc/nginx:/etc/nginx/
-      - ./nginx/share/nginx:/usr/share/nginx
-      - .:/data/www
-  ports:
-    # or 8080:8080
-      - "443:443"
-  links:
-      - "girder:girder"
-  command: [nginx, '-g', 'daemon off;']
+# nginx:
+#   image: nginx:1.15
+#   volumes:
+#       # - ./nginx/girder.conf:/etc/nginx/default.d/girder.conf
+#       # - ./nginx/server.key:/etc/nginx/ssl/nginx.key
+#       - ./nginx/etc/nginx:/etc/nginx/
+#       - ./nginx/share/nginx:/usr/share/nginx
+#       - .:/data/www
+#   ports:
+#     # or 8080:8080
+#       - "443:443"
+#   links:
+#       - "girder:girder"
+#   command: [nginx, '-g', 'daemon off;']
 
 
 
@@ -31,4 +31,6 @@ girder:
     - "9000:8080"
   links:
     - "mongodb:mongodb"
+  volumes:
+    - ../girder:/girder
   command: --host 0.0.0.0 --database mongodb://mongodb:27017/girder

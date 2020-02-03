@@ -30,13 +30,17 @@ RUN yum install -y gcc-c++ make curl && \
     yum install -y nodejs
 
 # clone the repo
-WORKDIR /girder
+# RUN mkdir /girder
+# WORKDIR /girder
+# RUN echo "haha"
+# RUN ls -l
+# RUN ls mnt
 RUN cd /girder && \
     git clone --branch 2.x-maintenance https://github.com/girder/girder.git && \
     cd girder
 
 # installation
-WORKDIR /girder/girder
+# WORKDIR /girder/girder
 RUN pip install --upgrade --upgrade-strategy eager --editable .[plugins] && \
     girder-install web --all-plugins
 
